@@ -1,12 +1,23 @@
+"""
+Exploratory Spatial Data Analysis for Smart Mobility Root Cause Analysis
+
+Chapter 3.1: Time-series Data Exploration 
+
+Yifang Tian & Yaming Liu
+
+"""
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# Load the data
 data_pod_transmit = np.load(
     'C:/Users/yamin/Desktop/作业/1786/project/20240115_matrix/20240115/latency/pod_level_data_transmit_bandwidth.npy',
     allow_pickle=True).item()
 data_pod_transmit = pd.DataFrame(data_pod_transmit)
 
+# Data preparation
 time_values = pd.to_datetime(
     [int(t) for t in data_pod_transmit.loc['time', 'book_info']], unit='s')
 print('Length of time_values:', len(time_values))
@@ -35,6 +46,8 @@ assert sequences_data.shape[1] == len(pod_names), \
 sequences = pd.DataFrame(sequences_data, columns=pod_names, index=time_values)
 print('Created sequences DataFrame with shape:', sequences.shape)
 
+
+# Resample the data into 5 min interval and plot
 plt.figure(figsize=(14, 8))
 for pod_name in sequences.columns:
 
@@ -53,6 +66,8 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
 
+
+# Calculate the previous/after 5 minutes change rate and plot
 plt.figure(figsize=(14, 8))
 for pod_name in sequences.columns:
     # if not pod_name.startswith("scenario10-bot-deployment-69bbf69f44"):
